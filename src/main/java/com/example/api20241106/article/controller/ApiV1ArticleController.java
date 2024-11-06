@@ -2,6 +2,10 @@ package com.example.api20241106.article.controller;
 
 import com.example.api20241106.article.dto.ArticleDTO;
 import com.example.api20241106.article.entity.Article;
+import com.example.api20241106.article.request.ArticleCreateRequest;
+import com.example.api20241106.article.request.ArticleModifyRequest;
+import com.example.api20241106.article.response.ArticleResponse;
+import com.example.api20241106.article.response.ArticlesResponse;
 import com.example.api20241106.article.service.ArticleService;
 import com.example.api20241106.global.RsData.RsData;
 import jakarta.validation.Valid;
@@ -21,17 +25,11 @@ import java.util.List;
 public class ApiV1ArticleController{
 
     private  final ArticleService articleService;
-    @AllArgsConstructor
-    @Getter
-    public static class ArticlesRespones{
-        private  final List<ArticleDTO> articleList;
-
-    }
 
 
 
     @GetMapping("")
-    public RsData<ArticlesRespones> list(){
+    public RsData<ArticlesResponse> list(){
         List<ArticleDTO> articleList = new ArrayList<>();
 
         Article article1 = new Article("제목1","내용1");
@@ -43,41 +41,31 @@ public class ApiV1ArticleController{
         Article article3 = new Article("제목3","내용3");
         articleList.add(new ArticleDTO(article3));
 
-        return RsData.of("200","게시글 다건 조회 성공",  new ArticlesRespones((articleList)));
+        return RsData.of("200","게시글 다건 조회 성공",  new ArticlesResponse((articleList)));
     }
 
-    @Getter
-    @AllArgsConstructor
-    public static class ArticleRespones{
-        private  final ArticleDTO article;
-    }
+
 
     @GetMapping("/{id}")
-    public RsData<ArticleRespones> getArticle(@PathVariable("id")Long id){
+    public RsData<ArticleResponse> getArticle(@PathVariable("id")Long id){
         Article article = new Article("제목1","내용1");
 
         ArticleDTO articleDTO = new ArticleDTO(article);
-        return RsData.of("200","단건 조회 성공", new ArticleRespones(articleDTO));
+        return RsData.of("200","단건 조회 성공", new ArticleResponse(articleDTO));
     }
-    @Data
-    public static class ArticleRequest{
-        @NotBlank
-        private  String subject;
-        @NotBlank
-        private  String content;
-    }
+
     @PostMapping("")
-    public String create(@Valid @RequestBody ArticleRequest articleRequest){
-        System.out.println(articleRequest.getSubject());
-        System.out.println(articleRequest.getContent());
+    public String create(@Valid @RequestBody ArticleCreateRequest articleCreateRequest){
+        System.out.println(articleCreateRequest.getSubject());
+        System.out.println(articleCreateRequest.getContent());
         return "등록완료";
 
     }
     @PatchMapping("/{id}")
-    public String modify(@PathVariable("id")Long id,@Valid @RequestBody ArticleRequest articleRequest){
+    public String modify(@PathVariable("id")Long id,@Valid @RequestBody ArticleModifyRequest articleModifyRequest){
         System.out.println(id);
-        System.out.println(articleRequest.getSubject());
-        System.out.println(articleRequest.getContent());
+        System.out.println(articleModifyRequest.getSubject());
+        System.out.println(articleModifyRequest.getContent());
         return "수정완료";
     }
 
