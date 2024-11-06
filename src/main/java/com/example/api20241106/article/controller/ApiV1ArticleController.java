@@ -34,8 +34,11 @@ public class ApiV1ArticleController{
     }
 
     @GetMapping("/{id}")
-    public String getArticle(){
-        return "단건";
+    public ArticleDTO getArticle(){
+        Article article = new Article("제목1","내용1");
+
+        ArticleDTO articleDTO = new ArticleDTO(article);
+        return articleDTO;
     }
 
     @PostMapping("")
