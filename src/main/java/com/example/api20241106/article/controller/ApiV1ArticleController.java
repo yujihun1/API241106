@@ -4,6 +4,8 @@ import com.example.api20241106.article.dto.ArticleDTO;
 import com.example.api20241106.article.entity.Article;
 import com.example.api20241106.article.request.ArticleCreateRequest;
 import com.example.api20241106.article.request.ArticleModifyRequest;
+import com.example.api20241106.article.response.ArticleCreateResponse;
+import com.example.api20241106.article.response.ArticleModifyResponse;
 import com.example.api20241106.article.response.ArticleResponse;
 import com.example.api20241106.article.response.ArticlesResponse;
 import com.example.api20241106.article.service.ArticleService;
@@ -40,20 +42,31 @@ public class ApiV1ArticleController{
 
     @GetMapping("/{id}")
     public RsData<ArticleResponse> getArticle(@PathVariable("id")Long id){
-       ArticleDTO articleDTO = this.articleService.getArticle(id);
+       Article article = this.articleService.getArticle(id);
+       ArticleDTO articleDTO = new ArticleDTO(article);
         return RsData.of("200","단건 조회 성공", new ArticleResponse(articleDTO));
     }
 
     @PostMapping("")
-    public String create(@Valid @RequestBody ArticleCreateRequest articleCreateRequest){
+    public RsData<ArticleCreateResponse> create(@Valid @RequestBody ArticleCreateRequest articleCreateRequest) {
+        Article article = this.articleService.write(articleCreateRequest.getSubject(), articleCreateRequest.getContent());
 
-        return "등록완료";
+        return RsData.of("200", "등록성공", new ArticleCreateResponse(article));
 
     }
     @PatchMapping("/{id}")
-    public String modify(@PathVariable("id")Long id,@Valid @RequestBody ArticleModifyRequest articleModifyRequest){
+    public RsData<ArticleModifyResponse> modify(@PathVariable("id")Long id, @Valid @RequestBody ArticleModifyRequest articleModifyRequest){
 
-        return "수정완료";
+        Article article = this.articleService.getArticle(id);
+        if(article==null)return RsData.of(
+            "500",
+            "%d 번 게시물은 조재하지 않습니다.".formatted(id),
+            null
+        );
+
+
+        article = this.articleService.update(article,articleModifyRequest.getSubject(),articleModifyRequest.getContent());
+        return RsData.of("200","수정성공",new ArticleModifyResponse(article));
     }
 
     @DeleteMapping("/{id}")
