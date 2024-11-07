@@ -18,15 +18,20 @@ public class ArticleDTO {
 
    private final String content;
 
+   private  final String authour;
+
+
    private final LocalDateTime createdDate;
 
    private final LocalDateTime modifiedDate;
+
 
 
    public ArticleDTO(Article article){
        this.id = article.getId();
        this.subject = article.getSubject();
        this.content = article.getContent();
+       this.authour = article.getMember().getUsername();
        this.createdDate = article.getCreateDate();
        this.modifiedDate = article.getModifiedDate();
    }

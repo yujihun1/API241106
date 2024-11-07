@@ -67,7 +67,7 @@ public class ApiV1ArticleController{
 
         Article article = this.articleService.getArticle(id);
         if(article==null)return RsData.of(
-            "500",
+            "404",
             "%d 번 게시물은 조재하지 않습니다.".formatted(id),
             null
         );
@@ -82,7 +82,7 @@ public class ApiV1ArticleController{
     public RsData<ArticleResponse> delete(@PathVariable("id")Long id){
 
       Article article =  this.articleService.getArticle(id);
-      if(article==null) return RsData.of("500","%d번 게시물은 존재하지 않습니다.".formatted(id),null);
+      if(article==null) return RsData.of("404","%d번 게시물은 존재하지 않습니다.".formatted(id),null);
 
       this.articleService.delete(article);
         return RsData.of("200","삭제성공",new ArticleResponse(new ArticleDTO(article)));
