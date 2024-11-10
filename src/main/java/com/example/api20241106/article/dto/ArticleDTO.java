@@ -32,7 +32,7 @@ public class ArticleDTO {
        this.subject = article.getSubject();
        this.content = article.getContent();
        this.authour = article.getMember().getUsername();
-       this.createdDate = article.getCreateDate();
+       this.createdDate = article.getCreatedDate();
        this.modifiedDate = article.getModifiedDate();
    }
 }

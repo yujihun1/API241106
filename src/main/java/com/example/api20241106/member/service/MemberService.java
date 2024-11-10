@@ -13,11 +13,17 @@ public class MemberService {
     private  final PasswordEncoder passwordEncoder;
 
 
-    public void join(String username,String password){
-       Member member =  Member.builder()
+    public Member join(String username, String password) {
+        Member checkedMember = this.memberRepository.findByUsername(username);
+        if (checkedMember != null) {
+            throw new RuntimeException("이미 가입됩 사용자 입니다.");
+        }
+        Member member = Member.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
                 .build();
+
         this.memberRepository.save(member);
+        return member;
     }
 }

@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 public class MemberDTO {
     private  final Long id;
     private  final  String username;
-    private  final LocalDateTime createData;
-    private  final LocalDateTime modifiedData;
+    private  final LocalDateTime createdData;
+    private  final LocalDateTime modifiedDate;
 
-    public MemberDTO(Member article){
-        this.id = article.getId();
-        this.username = article.getUsername();
-        this.createData = article.getCreateDate();
-        this.modifiedData = article.getModifiedDate();
+    public MemberDTO(Member member) {
+        this.id = member.getId();
+        this.username = member.getUsername();
+        this.createdData = member.getCreatedDate();
+        this.modifiedDate = member.getModifiedDate();
 
     }
 }

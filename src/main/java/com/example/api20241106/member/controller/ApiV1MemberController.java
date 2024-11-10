@@ -1,7 +1,9 @@
 package com.example.api20241106.member.controller;
 
+import com.example.api20241106.global.RsData.RsData;
 import com.example.api20241106.member.entity.Member;
 import com.example.api20241106.member.request.MemberRequest;
+import com.example.api20241106.member.response.MemberResponse;
 import com.example.api20241106.member.service.MemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -19,9 +21,9 @@ public class ApiV1MemberController {
     private  final MemberService memberService;
 
     @PostMapping("/join")
-    public String join(@Valid @RequestBody MemberRequest memberRequest){
-        this.memberService.join(memberRequest.getUsername(),memberRequest.getPassword());
-        return "성공";
+    public RsData<MemberResponse> join (@Valid @RequestBody MemberRequest memberRequest) {
+        Member member = this.memberService.join(memberRequest.getUsername(), memberRequest.getPassword());
+        return RsData.of("200", "회원가입이 완료되었습니다.", new MemberResponse(member));
 
     }
 }
